@@ -1,6 +1,7 @@
 from PIL import Image
 
 def create_binary_message(decrypted_message):
+  decrypted_message += '#'
   binary_msg = []
   for i in decrypted_message:
     char_to_integer = ord(i)
@@ -20,26 +21,39 @@ def pixel_encode(decrypted_message, image):
 
   pixels = image.load()
 
-  print(pixels[0,0][1])
-
-  #for i in range(image.size[0]):
-  #  for j in rprint(i)ange(image.size[1]):
-  #    for k in (0,2):
-  #      print(pixels[i,j][k])
-  
   binary_msg = create_binary_message(decrypted_message)
-  print(binary_msg)
 
+  binary_msg_size = len(binary_msg)
+  aux = 0
+
+  for i in range(image.size[0]):
+    for j in range(image.size[1]):
+      for k in range(0,3):
+        if (aux < binary_msg_size):
+          if (pixels[i,j][k] % 2 == 0 and binary_msg[aux] == '1'):
+            if(k == 0):
+              pixels[i,j] = (pixels[i,j][0]+1, pixels[i,j][1], pixels[i,j][2])
+            elif(k == 1):
+              pixels[i,j] = (pixels[i,j][0], pixels[i,j][1]+1, pixels[i,j][2])
+            else:
+              pixels[i,j] = (pixels[i,j][0], pixels[i,j][1], pixels[i,j][2]+1)
+              
+          elif (pixels[i,j][k] % 2 != 0 and binary_msg[aux] == '0'):
+            if(k == 0):
+              pixels[i,j] = (pixels[i,j][0]-1, pixels[i,j][1], pixels[i,j][2])
+            elif(k == 1):
+              pixels[i,j] = (pixels[i,j][0], pixels[i,j][1]-1, pixels[i,j][2])
+            else:
+              pixels[i,j] = (pixels[i,j][0], pixels[i,j][1], pixels[i,j][2]-1)
+          aux += 1
+        else:
+          return image
 
 def encode():
   print('Entering encode function')
 
   image_name = input('Digite o nome da imagem:')
   image = Image.open(image_name, 'r')
-  #image.show()
-
-  pixel_values = image.getpixel((0,0))
-  print(pixel_values)
 
   width, height = image.size
 
@@ -51,10 +65,20 @@ def encode():
   else:
     print('Tamanho de imagem suficiente')
   
-  pixel_encode(decrypted_message, image)
+  new_image = pixel_encode(decrypted_message, image)
+
+  image_save_path = input('Digite o nome da imagem criptografada: ')
+
+  new_image.save(image_save_path)
 
 def decode():
   print('Entering decode function')
+
+  image_to_decode = input('Digite a imagem a ser descriptografada: ')
+
+  image = Image.open(image_to_decode)
+
+  decoded_message = decode_pixel
 
 def main():
   print('Entering main')
