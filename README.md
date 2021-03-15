@@ -20,7 +20,7 @@ python3 image-steganography.py
 
 ### If it's Encryption (type 1):
 
-- Type path to image used to encrypt
+- Type path to image used to encrypt *IMPORTANT* PNG is the recommended format to be used since JPG and JPEG compresses pixels and end changing pixel values.
 - Type message to be encrypted
 - Type the name of the image with the encrypted message
 
