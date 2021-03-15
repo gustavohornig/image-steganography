@@ -6,13 +6,11 @@ def create_binary_message(decrypted_message):
   for i in decrypted_message:
     char_to_integer = ord(i)
     byte = bin(char_to_integer)
-    print(byte)
     if(len(byte) < 9):
       zeros_to_add = 9 - len(byte)
       for _ in range(zeros_to_add):
         binary_msg.append('0')
     for j in range(2,len(byte)):
-      print(byte[j])
       binary_msg.append(byte[j])
 
   return binary_msg
@@ -50,7 +48,6 @@ def pixel_encode(decrypted_message, image):
           return image
 
 def encode():
-  print('Entering encode function')
 
   image_name = input('Digite o nome da imagem:')
   image = Image.open(image_name, 'r')
@@ -62,8 +59,6 @@ def encode():
   if(len(decrypted_message)*8 > width*height*3):
     print('Tamanho de imagem inválido')
     exit()
-  else:
-    print('Tamanho de imagem suficiente')
   
   new_image = pixel_encode(decrypted_message, image)
 
@@ -71,19 +66,57 @@ def encode():
 
   new_image.save(image_save_path)
 
+def pixel_decode(image):
+  
+  aux = 0
+  k = 0
+  binary_char = ''
+  decrypted_message = ''
+  pixels = image.load()
+  
+
+  for i in range(image.size[0]):
+    for j in range(image.size[1]):
+      k = 0
+      while (k < 3):
+        if (aux < 7):
+          if (pixels[i,j][k] % 2 == 0):
+            binary_char += '0'
+          else:
+            binary_char += '1'
+          aux += 1
+        else:
+          char = chr(int(binary_char, 2))
+          if(char == '#'):
+            return decrypted_message
+          decrypted_message += char
+          binary_char =''
+          aux = 0
+          k -= 1
+        k += 1
+
+  
 def decode():
-  print('Entering decode function')
 
   image_to_decode = input('Digite a imagem a ser descriptografada: ')
 
   image = Image.open(image_to_decode)
 
-  decoded_message = decode_pixel
+  decoded_message = pixel_decode(image)
+
+  print('A mensagem descriptografada é:')
+  print(decoded_message)
 
 def main():
-  print('Entering main')
 
-  option = int(input("1.Criptografar \n2.Descriptografar"))
+  print('#########################')
+  print('#     Steganography     #')
+  print('#    Gustavo Hornig     #')
+  print('#     GRR20163065       #')
+  print('#  Trabalho 2 - Cripto  #')
+  print('#########################')
+
+  option = int(input("1.Criptografar \n2.Descriptografar\nR: "))
 
   if (option == 1):
     encode()
