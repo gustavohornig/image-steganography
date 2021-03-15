@@ -52,16 +52,6 @@ def encode():
   image_name = input('Digite o nome da imagem:')
   image = Image.open(image_name, 'r')
 
-  pixels2 = image.load()
-  print(pixels2[0,0])
-  print(pixels2[0,1])
-  print(pixels2[0,2])
-  print(pixels2[0,3])
-  print(pixels2[0,4])
-  print(pixels2[0,5])
-  print(pixels2[0,6])
-  
-
   width, height = image.size
 
   decrypted_message = input('Digite a mensagem a ser criptografada: ')
@@ -69,19 +59,8 @@ def encode():
   if(len(decrypted_message)*8 > width*height*3):
     print('Tamanho de imagem inválido')
     exit()
-  else:
-    print('Tamanho de imagem suficiente')
   
   new_image = pixel_encode(decrypted_message, image)
-  pixels3 = new_image.load()
-  print(pixels3[0,0])
-  print(pixels3[0,1])
-  print(pixels3[0,2])
-  print(pixels3[0,3])
-  print(pixels3[0,4])
-  print(pixels3[0,5])
-  print(pixels3[0,6])
-
 
   image_save_path = input('Digite o nome da imagem criptografada: ')
 
@@ -101,7 +80,6 @@ def pixel_decode(image):
       k = 0
       while (k < 3):
         if (aux < 7):
-          print(' VALOR INT DO PIXEL -> ', pixels[i,j][k])
           if (pixels[i,j][k] % 2 == 0):
             binary_char += '0'
           else:
@@ -131,7 +109,14 @@ def decode():
 
 def main():
 
-  option = int(input("1.Criptografar \n2.Descriptografar"))
+  print('#########################')
+  print('#     Steganography     #')
+  print('#    Gustavo Hornig     #')
+  print('#     GRR20163065       #')
+  print('#  Trabalho 2 - Cripto  #')
+  print('#########################')
+
+  option = int(input("1.Criptografar \n2.Descriptografar\nR: "))
 
   if (option == 1):
     encode()
